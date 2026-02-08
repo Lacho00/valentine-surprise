@@ -1,35 +1,55 @@
-# === Seguridad y Configuración ===
+# === Archivos de Sistema y Configuración Local ===
 wp-config.php
 .htaccess
 *.log
 .DS_Store
+Thumbs.db
 
-# === Archivos de Node.js (Específicos para tu tema valentine) ===
+# === NODE.JS (CRÍTICO) ===
+# Ignoramos la carpeta gigante que vimos en tu lista
 node_modules/
 package-lock.json
 package.json
-/wp-content/themes/valentine/node_modules/
-/wp-content/themes/valentine/pnpm-lock.yaml
-/wp-content/themes/valentine/yarn.lock
+# Por si acaso tienes más adentro:
+**/node_modules/
 
-# === WordPress Core y Archivos Innecesarios ===
+# === WORDPRESS CORE (No se debe subir a Git) ===
+# Estos archivos ya vienen instalados en cualquier hosting o se pueden resubir
+wp-admin/
+wp-includes/
+index.php
 license.txt
 readme.html
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
 wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
 xmlrpc.php
+
+# === CONTENIDO (Solo dejamos tu tema) ===
+# Ignoramos plugins y temas por defecto (ahorramos espacio)
+wp-content/plugins/
+wp-content/themes/twentytwentytwo/
+wp-content/themes/twentytwentythree/
+wp-content/themes/twentytwentyfour/
+wp-content/themes/twentytwentyfive/
 wp-content/upgrade/
 wp-content/cache/
 wp-content/backups/
-wp-content/ai1wm-backups/
 
-# === Contenido Multimedia ===
-# Nota: Si subes esto a GitLab, el hosting gratuito podría quedarse sin espacio.
-# Mejor sube las fotos directamente al hosting por FTP una vez.
+# === MULTIMEDIA ===
+# Las fotos que subas por el panel de WordPress NO deben ir a Git
 wp-content/uploads/
 
-# === Basura de Temas y Editores ===
-/wp-content/themes/twentytwentyone/
+# === BASURA DE EDITORES ===
 .idea/
 .vscode/
-*.po~
-*.mo
+*.swp
