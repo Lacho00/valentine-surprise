@@ -1,9 +1,25 @@
 # === Archivos de Sistema y Configuración Local ===
-wp-config.php
-.htaccess
 *.log
-.DS_Store
-Thumbs.db
+wp-config.php
+wp-content/advanced-cache.php
+wp-content/backup-db/
+wp-content/backups/
+wp-content/blogs.dir/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/wp-cache-config.php
+wp-content/plugins/akismet.php
+/wp-content/uploads/
+license.txt
+readme.html
+sitemap.xml
+sitemap.xml.gz
+.idea/
+*.ipr
+*.iws
+.idea_modules/
+.htaccess
 
 # === NODE.JS (CRÍTICO) ===
 # Ignoramos la carpeta gigante que vimos en tu lista
@@ -12,14 +28,24 @@ package-lock.json
 package.json
 # Por si acaso tienes más adentro:
 **/node_modules/
+/wp-content/themes/valentine/node_modules/
+/wp-content/themes/valentine/pnpm-lock.yaml
+/wp-content/themes/valentine/style.css.map
+/wp-content/themes/valentine/yarn.lock
 
-# === WORDPRESS CORE (No se debe subir a Git) ===
-# Estos archivos ya vienen instalados en cualquier hosting o se pueden resubir
+# themes
+/wp-content/themes/twentytwentyfive/
+/wp-content/themes/twentytwentyfour/
+/wp-content/themes/twentytwentythree/
+.pnpm-debug.log
+/wp-content/ai1wm-backups/
+
+
+# === WordPress Core ===
+# Esto evita que se suban los archivos pesados de la instalación base
 wp-admin/
 wp-includes/
 index.php
-license.txt
-readme.html
 wp-activate.php
 wp-blog-header.php
 wp-comments-post.php
@@ -33,23 +59,3 @@ wp-settings.php
 wp-signup.php
 wp-trackback.php
 xmlrpc.php
-
-# === CONTENIDO (Solo dejamos tu tema) ===
-# Ignoramos plugins y temas por defecto (ahorramos espacio)
-wp-content/plugins/
-wp-content/themes/twentytwentytwo/
-wp-content/themes/twentytwentythree/
-wp-content/themes/twentytwentyfour/
-wp-content/themes/twentytwentyfive/
-wp-content/upgrade/
-wp-content/cache/
-wp-content/backups/
-
-# === MULTIMEDIA ===
-# Las fotos que subas por el panel de WordPress NO deben ir a Git
-wp-content/uploads/
-
-# === BASURA DE EDITORES ===
-.idea/
-.vscode/
-*.swp
