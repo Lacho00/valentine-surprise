@@ -4,14 +4,13 @@ wp-config.php
 *.log
 .DS_Store
 
-# === Archivos de Node.js (Basado en tu ls) ===
-# Ignoramos los de la raíz y los de tu tema
+# === Archivos de Node.js (Específicos para tu tema valentine) ===
 node_modules/
 package-lock.json
 package.json
-/wp-content/themes/teknovud/node_modules/
-/wp-content/themes/teknovud/pnpm-lock.yaml
-/wp-content/themes/teknovud/yarn.lock
+/wp-content/themes/valentine/node_modules/
+/wp-content/themes/valentine/pnpm-lock.yaml
+/wp-content/themes/valentine/yarn.lock
 
 # === WordPress Core y Archivos Innecesarios ===
 license.txt
@@ -24,8 +23,8 @@ wp-content/backups/
 wp-content/ai1wm-backups/
 
 # === Contenido Multimedia ===
-# Las imágenes ocupan mucho espacio en Git. 
-# Es mejor subirlas una vez manualmente al hosting.
+# Nota: Si subes esto a GitLab, el hosting gratuito podría quedarse sin espacio.
+# Mejor sube las fotos directamente al hosting por FTP una vez.
 wp-content/uploads/
 
 # === Basura de Temas y Editores ===
