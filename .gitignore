@@ -1,0 +1,15 @@
+wp-config.php
+.htaccess
+*.log
+node_modules/
+package-lock.json
+package.json
+/wp-content/themes/valentine/node_modules/
+/wp-content/upgrade/
+/wp-content/cache/
+/wp-content/ai1wm-backups/
+/wp-content/uploads/
+license.txt
+readme.html
+.idea/
+.vscode/

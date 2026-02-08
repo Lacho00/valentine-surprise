@@ -1,0 +1,36 @@
+# === Seguridad y Configuración ===
+wp-config.php
+.htaccess
+*.log
+.DS_Store
+
+# === Archivos de Node.js (Basado en tu ls) ===
+# Ignoramos los de la raíz y los de tu tema
+node_modules/
+package-lock.json
+package.json
+/wp-content/themes/teknovud/node_modules/
+/wp-content/themes/teknovud/pnpm-lock.yaml
+/wp-content/themes/teknovud/yarn.lock
+
+# === WordPress Core y Archivos Innecesarios ===
+license.txt
+readme.html
+wp-config-sample.php
+xmlrpc.php
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backups/
+wp-content/ai1wm-backups/
+
+# === Contenido Multimedia ===
+# Las imágenes ocupan mucho espacio en Git. 
+# Es mejor subirlas una vez manualmente al hosting.
+wp-content/uploads/
+
+# === Basura de Temas y Editores ===
+/wp-content/themes/twentytwentyone/
+.idea/
+.vscode/
+*.po~
+*.mo

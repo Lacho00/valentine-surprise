@@ -1,0 +1,304 @@
+/* Efectos adicionales y personalizaciones (sin Tailwind) */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1.valentine-title {
+    text-shadow: 2px 2px 4px rgba(225, 29, 72, 0.3);
+    background: linear-gradient(45deg, #e11d48, #fb7185, #fda4af);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    z-index: 100;
+    animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+#btn-yes {
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+#btn-no {
+    transition: left 0.15s ease-out, top 0.15s ease-out;
+    z-index: 40;
+}
+
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+}
+
+@media (max-width: 768px) {
+    .valentine-title {
+        font-size: 2.5rem !important;
+    }
+}
+
+.button-area {
+    cursor: default;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Animación de entrada suave (página principal) */
+.animate-fade-in {
+    animation: fade-in 1.2s ease-out forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Página yes: padding top y bottom (se aplica siempre, no depende de Tailwind) */
+.valentine-yes-wrap {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .valentine-yes-wrap {
+        padding-top: 3.125rem;
+        padding-bottom: 3.125rem;
+    }
+}
+
+/* Página yes: gatitos alrededor en escritorio (todas visibles, mismo tamaño) */
+@media (min-width: 768px) {
+    .yes-cats-around {
+        display: block !important;
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    .yes-cats-around .yes-cat-box {
+        position: absolute;
+        width: 12rem;
+        height: 12rem;
+    }
+
+    .yes-cats-around .yes-cat-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 0.75rem;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        opacity: 0.9;
+    }
+
+}
+
+@media (max-width: 369px) {
+    .font-size-responsive {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* Emoji 💑 página yes: más grande en móvil */
+.valentine-yes-emoji {
+    font-size: 3.5rem;
+}
+
+@media (min-width: 768px) {
+    .valentine-yes-emoji {
+        font-size: 4rem;
+    }
+}
+
+/* Página yes: contenido más grande a partir de 1280px */
+@media (min-width: 1280px) {
+    .valentine-yes-content {
+        max-width: 48rem;
+    }
+    .valentine-yes-emoji {
+        font-size: 5rem;
+    }
+    .valentine-yes-title {
+        font-size: 3.5rem !important;
+    }
+    .valentine-yes-subtitle {
+        font-size: 1.5rem;
+        max-width: 36rem;
+    }
+    .valentine-yes-card {
+        max-width: 28rem;
+        padding: 2.5rem 3rem;
+    }
+    .valentine-yes-card-label {
+        font-size: 1.25rem;
+    }
+    .valentine-yes-card-numbers {
+        font-size: 2.5rem;
+        gap: 1.5rem;
+    }
+    .valentine-yes-card-numbers .rounded-xl {
+        padding: 1rem 1.25rem;
+        min-width: 5.5rem;
+    }
+    .valentine-yes-card-numbers .text-3xl {
+        font-size: 2rem;
+    }
+    .valentine-yes-card-more {
+        font-size: 1.25rem;
+        margin-top: 1.25rem;
+    }
+    .valentine-yes-emojis {
+        font-size: 3.5rem !important;
+    }
+}
+
+/* Popup "break up" (página yes) */
+.valentine-popup-overlay {
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+.valentine-popup-overlay.hidden {
+    display: none !important;
+}
+
+/* Popup móvil: más compacto, que quepa en pantalla */
+.valentine-popup-box {
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 22rem;
+    min-height: auto;
+    max-height: calc(100vh - 1.5rem);
+    padding: 1.5rem;
+    text-align: center;
+    border: 4px solid rgba(251, 113, 133, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.valentine-popup-cat {
+    width: 8rem;
+    height: 8rem;
+    margin: 0 auto 1rem;
+    object-fit: contain;
+    border-radius: 1rem;
+    flex-shrink: 0;
+}
+
+.valentine-popup-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #e11d48;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.valentine-popup-text {
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin-bottom: 1.25rem;
+    line-height: 1.45;
+}
+
+.valentine-popup-btn {
+    background: linear-gradient(to right, #e11d48, #fb7185);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+}
+
+.valentine-popup-btn:hover {
+    opacity: 0.9;
+}
+
+/* Popup tablet */
+@media (min-width: 640px) {
+    .valentine-popup-box {
+        max-width: 26rem;
+        padding: 2rem;
+    }
+    .valentine-popup-cat {
+        width: 12rem;
+        height: 12rem;
+    }
+    .valentine-popup-title {
+        font-size: 1.75rem;
+    }
+    .valentine-popup-text {
+        font-size: 1.1rem;
+    }
+}
+
+/* Popup desktop: ocupa casi toda la pantalla */
+@media (min-width: 768px) {
+    .valentine-popup-box {
+        width: 88vw;
+        max-width: 40rem;
+        min-height: 80vh;
+        max-height: 90vh;
+        padding: 3rem;
+    }
+    .valentine-popup-cat {
+        width: 18rem;
+        height: 18rem;
+    }
+    .valentine-popup-title {
+        font-size: 2.5rem;
+    }
+    .valentine-popup-text {
+        font-size: 1.4rem;
+    }
+    .valentine-popup-btn {
+        font-size: 1.125rem;
+        padding: 0.75rem 2rem;
+    }
+}
