@@ -101,17 +101,32 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
             <!-- Bloque Together for centrado horizontalmente -->
             <div class="valentine-yes-card bg-white/80 backdrop-blur-md rounded-3xl p-6 md:p-8 mb-10 shadow-xl border-2 border-valentine-pink/30 max-w-md mx-auto text-center">
                 <p class="valentine-yes-card-label text-gray-700 text-lg mb-3">💕 Together for</p>
-                <div class="valentine-yes-card-numbers flex flex-wrap justify-center gap-4 text-valentine-red font-bold text-2xl md:text-3xl">
-                    <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
-                        <span>1</span>
-                        <span class="block text-sm font-normal text-gray-600">year</span>
-                    </div>
-                    <div class="text-3xl self-center">+</div>
-                    <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
-                        <span>2</span>
-                        <span class="block text-sm font-normal text-gray-600">months</span>
-                    </div>
-                </div>
+                <div class="valentine-yes-card-numbers valentine-yes-counter text-valentine-red font-bold text-2xl md:text-3xl" data-start="2025-01-14" data-tz="America/Havana">
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="years">1</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="year|years">year</span>
+                        </div>
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="months">8</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="month|months">months</span>
+                        </div>
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="days">25</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="day|days">days</span>
+                        </div>
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="hours">15</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="hour|hours">hours</span>
+                        </div>
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="minutes">07</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="min|min">min</span>
+                        </div>
+                                            <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="seconds">42</span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="sec|sec">sec</span>
+                        </div>
+                                    </div>
                 <p class="text-valentine-red mt-4 font-medium valentine-yes-card-more">And many more to come! 🌹</p>
             </div>
 
@@ -202,6 +217,49 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
             });
         }
     });
+
+    // Contador "Together for": diferencia de calendario en la hora de pared de data-tz.
+    (function () {
+        var counter = document.querySelector('.valentine-yes-counter');
+        if (!counter) return;
+        var start = counter.dataset.start.split('-').map(Number);
+        var fmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: counter.dataset.tz, hourCycle: 'h23',
+            year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+        });
+        function nowParts() {
+            var p = {};
+            fmt.formatToParts(new Date()).forEach(function (x) { p[x.type] = Number(x.value); });
+            return p;
+        }
+        function daysIn(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }
+        // Mismo cálculo que valentine_counter_parts() en functions.php.
+        function render() {
+            var n = nowParts();
+            var months = (n.year - start[0]) * 12 + (n.month - start[1]);
+            if (n.day < Math.min(start[2], daysIn(n.year, n.month))) months--;
+            var values = { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+            if (months >= 0) {
+                var total = (start[1] - 1) + months;
+                var ay = start[0] + Math.floor(total / 12), am = total % 12 + 1;
+                var ad = Math.min(start[2], daysIn(ay, am));
+                values = {
+                    years: Math.floor(months / 12), months: months % 12,
+                    days: Math.round((Date.UTC(n.year, n.month - 1, n.day) - Date.UTC(ay, am - 1, ad)) / 86400000),
+                    hours: n.hour, minutes: n.minute, seconds: n.second
+                };
+            }
+            Object.keys(values).forEach(function (unit) {
+                var num = counter.querySelector('[data-unit="' + unit + '"]');
+                var label = num.nextElementSibling;
+                var forms = label.dataset.label.split('|');
+                num.textContent = ['hours', 'minutes', 'seconds'].indexOf(unit) > -1 ? String(values[unit]).padStart(2, '0') : values[unit];
+                label.textContent = values[unit] === 1 ? forms[0] : forms[1];
+            });
+        }
+        render();
+        setInterval(render, 1000);
+    })();
     </script>
 </body>
 </html>

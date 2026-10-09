@@ -73,3 +73,47 @@ function valentine_load_acf_fields() {
     }
 }
 add_action( 'acf/init', 'valentine_load_acf_fields' );
+
+/**
+ * Tiempo transcurrido para el contador "Together for", en hora de pared.
+ *
+ * Los meses se cuentan por calendario; si el día de inicio no existe en un mes
+ * (29-31), se toma el último día de ese mes. Un inicio futuro devuelve todo a 0.
+ * El JS de template-valentine-yes.php usa el mismo cálculo.
+ *
+ * @param DateTimeImmutable $start Inicio a las 00:00.
+ * @param DateTimeImmutable $now   Ahora, en la misma zona horaria.
+ * @return array<string,int>
+ */
+function valentine_counter_parts( DateTimeImmutable $start, DateTimeImmutable $now ) {
+	$sy = (int) $start->format( 'Y' );
+	$sm = (int) $start->format( 'n' );
+	$sd = (int) $start->format( 'j' );
+	$ny = (int) $now->format( 'Y' );
+	$nm = (int) $now->format( 'n' );
+	$nd = (int) $now->format( 'j' );
+
+	$months = ( $ny - $sy ) * 12 + ( $nm - $sm );
+	if ( $nd < min( $sd, (int) gmdate( 't', gmmktime( 0, 0, 0, $nm, 1, $ny ) ) ) ) {
+		$months--;
+	}
+
+	$parts = array_fill_keys( array( 'years', 'months', 'days', 'hours', 'minutes', 'seconds' ), 0 );
+	if ( $months < 0 ) {
+		return $parts;
+	}
+
+	$total = ( $sm - 1 ) + $months;
+	$ay    = $sy + intdiv( $total, 12 );
+	$am    = $total % 12 + 1;
+	$ad    = min( $sd, (int) gmdate( 't', gmmktime( 0, 0, 0, $am, 1, $ay ) ) );
+
+	$parts['years']   = intdiv( $months, 12 );
+	$parts['months']  = $months % 12;
+	$parts['days']    = (int) round( ( gmmktime( 0, 0, 0, $nm, $nd, $ny ) - gmmktime( 0, 0, 0, $am, $ad, $ay ) ) / DAY_IN_SECONDS );
+	$parts['hours']   = (int) $now->format( 'G' );
+	$parts['minutes'] = (int) $now->format( 'i' );
+	$parts['seconds'] = (int) $now->format( 's' );
+	return $parts;
+}
+

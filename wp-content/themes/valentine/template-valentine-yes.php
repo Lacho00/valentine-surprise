@@ -11,8 +11,21 @@ $title_yes  = get_field( 'valentine_yes_title' ) ?: "I knew you'd say yes! 🎉"
 $subtitle   = get_field( 'valentine_yes_subtitle' ) ?: 'Thank you for being my Valentine. I love you! 💕';
 $together   = get_field( 'valentine_yes_together' ) ?: 'Together for';
 $more       = get_field( 'valentine_yes_more' ) ?: 'And many more to come! 🌹';
-$years      = get_field( 'valentine_yes_years' ) !== '' && get_field( 'valentine_yes_years' ) !== null ? (int) get_field( 'valentine_yes_years' ) : 1;
-$months     = get_field( 'valentine_yes_months' ) !== '' && get_field( 'valentine_yes_months' ) !== null ? (int) get_field( 'valentine_yes_months' ) : 2;
+// Contador "Together for": desde las 00:00 de la fecha de inicio, hora de Cuba.
+// El PHP pinta el valor inicial y el JS de abajo lo actualiza cada segundo.
+$start_date = get_field( 'valentine_yes_start' ) ?: '2025-01-14';
+$counter_tz = new DateTimeZone( 'America/Havana' );
+$counter_start = DateTimeImmutable::createFromFormat( '!Y-m-d', $start_date, $counter_tz ) ?: new DateTimeImmutable( '2025-01-14', $counter_tz );
+$counter_now = new DateTimeImmutable( 'now', $counter_tz );
+$elapsed = valentine_counter_parts( $counter_start, $counter_now );
+$counter_units = array(
+    'years'   => array( $elapsed['years'], 'year', 'years' ),
+    'months'  => array( $elapsed['months'], 'month', 'months' ),
+    'days'    => array( $elapsed['days'], 'day', 'days' ),
+    'hours'   => array( $elapsed['hours'], 'hour', 'hours' ),
+    'minutes' => array( $elapsed['minutes'], 'min', 'min' ),
+    'seconds' => array( $elapsed['seconds'], 'sec', 'sec' ),
+);
 
 // Gatitos alrededor en escritorio (6). En el centro móvil se usa cats-kittens.gif; aquí usamos cutecats-kitten para no repetir.
 $yes_cats = array(
@@ -93,16 +106,13 @@ $yes_cats = array(
             <!-- Bloque Together for centrado horizontalmente -->
             <div class="valentine-yes-card bg-white/80 backdrop-blur-md rounded-3xl p-6 md:p-8 mb-10 shadow-xl border-2 border-valentine-pink/30 max-w-md mx-auto text-center">
                 <p class="valentine-yes-card-label text-gray-700 text-lg mb-3">💕 <?php echo esc_html( $together ); ?></p>
-                <div class="valentine-yes-card-numbers flex flex-wrap justify-center gap-4 text-valentine-red font-bold text-2xl md:text-3xl">
-                    <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
-                        <span><?php echo (int) $years; ?></span>
-                        <span class="block text-sm font-normal text-gray-600"><?php echo $years === 1 ? 'year' : 'years'; ?></span>
-                    </div>
-                    <div class="text-3xl self-center">+</div>
-                    <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
-                        <span><?php echo (int) $months; ?></span>
-                        <span class="block text-sm font-normal text-gray-600"><?php echo $months === 1 ? 'month' : 'months'; ?></span>
-                    </div>
+                <div class="valentine-yes-card-numbers valentine-yes-counter text-valentine-red font-bold text-2xl md:text-3xl" data-start="<?php echo esc_attr( $counter_start->format( 'Y-m-d' ) ); ?>" data-tz="America/Havana">
+                    <?php foreach ( $counter_units as $unit => $parts ) : ?>
+                        <div class="bg-valentine-rose/30 rounded-xl p-3 min-w-[72px]">
+                            <span data-unit="<?php echo esc_attr( $unit ); ?>"><?php echo in_array( $unit, array( 'hours', 'minutes', 'seconds' ), true ) ? sprintf( '%02d', $parts[0] ) : (int) $parts[0]; ?></span>
+                            <span class="block text-sm font-normal text-gray-600" data-label="<?php echo esc_attr( $parts[1] . '|' . $parts[2] ); ?>"><?php echo esc_html( 1 === $parts[0] ? $parts[1] : $parts[2] ); ?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 <p class="text-valentine-red mt-4 font-medium valentine-yes-card-more"><?php echo esc_html( $more ); ?></p>
             </div>
@@ -194,6 +204,49 @@ $yes_cats = array(
             });
         }
     });
+
+    // Contador "Together for": diferencia de calendario en la hora de pared de data-tz.
+    (function () {
+        var counter = document.querySelector('.valentine-yes-counter');
+        if (!counter) return;
+        var start = counter.dataset.start.split('-').map(Number);
+        var fmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: counter.dataset.tz, hourCycle: 'h23',
+            year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+        });
+        function nowParts() {
+            var p = {};
+            fmt.formatToParts(new Date()).forEach(function (x) { p[x.type] = Number(x.value); });
+            return p;
+        }
+        function daysIn(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }
+        // Mismo cálculo que valentine_counter_parts() en functions.php.
+        function render() {
+            var n = nowParts();
+            var months = (n.year - start[0]) * 12 + (n.month - start[1]);
+            if (n.day < Math.min(start[2], daysIn(n.year, n.month))) months--;
+            var values = { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+            if (months >= 0) {
+                var total = (start[1] - 1) + months;
+                var ay = start[0] + Math.floor(total / 12), am = total % 12 + 1;
+                var ad = Math.min(start[2], daysIn(ay, am));
+                values = {
+                    years: Math.floor(months / 12), months: months % 12,
+                    days: Math.round((Date.UTC(n.year, n.month - 1, n.day) - Date.UTC(ay, am - 1, ad)) / 86400000),
+                    hours: n.hour, minutes: n.minute, seconds: n.second
+                };
+            }
+            Object.keys(values).forEach(function (unit) {
+                var num = counter.querySelector('[data-unit="' + unit + '"]');
+                var label = num.nextElementSibling;
+                var forms = label.dataset.label.split('|');
+                num.textContent = ['hours', 'minutes', 'seconds'].indexOf(unit) > -1 ? String(values[unit]).padStart(2, '0') : values[unit];
+                label.textContent = values[unit] === 1 ? forms[0] : forms[1];
+            });
+        }
+        render();
+        setInterval(render, 1000);
+    })();
     </script>
 <?php wp_footer(); ?>
 </body>

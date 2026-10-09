@@ -302,3 +302,16 @@ h1.valentine-title {
         padding: 0.75rem 2rem;
     }
 }
+
+/* Contador "Together for": 2 filas de 3 (años/meses/días y horas/min/seg) */
+.valentine-yes-counter {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    font-variant-numeric: tabular-nums;
+}
+@media (min-width: 1280px) {
+    .valentine-yes-counter {
+        gap: 1.5rem;
+    }
+}
