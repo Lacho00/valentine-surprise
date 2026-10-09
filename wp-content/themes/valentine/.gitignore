@@ -1,61 +1,6 @@
-# === Archivos de Sistema y Configuración Local ===
-*.log
-wp-config.php
-wp-content/advanced-cache.php
-wp-content/backup-db/
-wp-content/backups/
-wp-content/blogs.dir/
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-wp-content/wp-cache-config.php
-wp-content/plugins/akismet.php
-/wp-content/uploads/
-license.txt
-readme.html
-sitemap.xml
-sitemap.xml.gz
-.idea/
-*.ipr
-*.iws
-.idea_modules/
-.htaccess
-
-# === NODE.JS (CRÍTICO) ===
-# Ignoramos la carpeta gigante que vimos en tu lista
+# Dependencias y artefactos de build del tema
 node_modules/
-package-lock.json
-package.json
-# Por si acaso tienes más adentro:
-**/node_modules/
-/wp-content/themes/valentine/node_modules/
-/wp-content/themes/valentine/pnpm-lock.yaml
-/wp-content/themes/valentine/style.css.map
-/wp-content/themes/valentine/yarn.lock
-
-# themes
-/wp-content/themes/twentytwentyfive/
-/wp-content/themes/twentytwentyfour/
-/wp-content/themes/twentytwentythree/
-.pnpm-debug.log
-/wp-content/ai1wm-backups/
-
-
-# === WordPress Core ===
-# Esto evita que se suban los archivos pesados de la instalación base
-wp-admin/
-wp-includes/
-index.php
-wp-activate.php
-wp-blog-header.php
-wp-comments-post.php
-wp-config-sample.php
-wp-cron.php
-wp-links-opml.php
-wp-load.php
-wp-login.php
-wp-mail.php
-wp-settings.php
-wp-signup.php
-wp-trackback.php
-xmlrpc.php
+pnpm-lock.yaml
+yarn.lock
+style.css.map
+*.log

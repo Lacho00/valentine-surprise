@@ -1,15 +1,26 @@
+# Config local
 wp-config.php
 .htaccess
 *.log
+
+# Node (raíz)
 node_modules/
-package-lock.json
-package.json
-/wp-content/themes/valentine/node_modules/
+/package.json
+/package-lock.json
+
+# wp-content generado
 /wp-content/upgrade/
 /wp-content/cache/
-/wp-content/ai1wm-backups/
 /wp-content/uploads/
+/wp-content/ai1wm-backups/
+
+# Ficheros de core que no hacen falta
 license.txt
 readme.html
+
+# Editores y herramientas
 .idea/
 .vscode/
+.codebase-memory/
+.claudeignore
+.public-*/
